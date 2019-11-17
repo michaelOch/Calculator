@@ -49,7 +49,8 @@ container.addEventListener('click', getNumber);
 function getNumber(e) {
     //  Event Listener for all the Number buttons
     if(e.target.classList.contains('number')) {
-        if(operator) {
+        const previousKeyType = container.dataset.previousKeyType;
+        if(previousKeyType === 'operator') {
             screen.value = '';
         }
         if(e.target.textContent == '.') {
@@ -59,6 +60,7 @@ function getNumber(e) {
         } else {
             screen.value += String(e.target.textContent);
         }
+        container.dataset.previousKeyType = 'number';
     }
 
     //  Event Listener for all the Operator buttons
@@ -78,6 +80,7 @@ function getNumber(e) {
             console.log(operator);
             screen.value = '';
         }
+        container.dataset.previousKeyType = 'operator';
     }
 
     //  Event Listener for the Equal button (i.e. =)
