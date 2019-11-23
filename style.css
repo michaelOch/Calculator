@@ -49,13 +49,24 @@ button {
 }
 
 .operator {
+    background-color: gray;
+    color: #fff;
+    border: 2px solid gray;
+}
+
+.calculate {
     background-color: #000;
     color: #fff;
     border: 2px solid #000;
 }
-
-.calculate {
-    background-color: gray;
+.clear {
+    background-color: crimson;
     color: #fff;
-    border: 2px solid gray;
+    border: 2px solid crimson;
+}
+
+.backspace {
+    background-color: cornflowerblue;
+    color: #fff;
+    border: 2px solid cornflowerblue;
 }

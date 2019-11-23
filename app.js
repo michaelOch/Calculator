@@ -11,33 +11,25 @@ function multiply(a, b){
 }
 
 function divide(a, b) {
-    return a / b;
+    return b == '0' ? 'Math Error' : a / b;
 }
 
 function operate(operator, a, b) {
-    if(operator == 'add') {
+    if(operator == '+') {
         return add(a,b);
-    } else if(operator == 'sub') {
+    } else if(operator == '-') {
         return subtract(a,b);
-    } else if(operator == 'mul') {
+    } else if(operator == 'x' || operator == '*') {
         return multiply(a,b);
     } else{
         return divide(a,b);
     }
 }
 
-function operatorSign(operator) {
-    if(operator === '+') {
-        return 'add';
-    } else if(operator === '-') {
-        return 'sub';
-    } else if(operator === 'x') {
-        return 'mul';
-    } else if(operator === '/') {
-        return 'div';
-    } else {
-        return '';
-    }
+//  Calculate Function to calculate the value when '=' sign is clicked
+function calc() {
+    screen.value = !isNaN(operate(operator, firstNum, Number(screen.value))) ? +operate(operator, firstNum, Number(screen.value)).toFixed(4) : operate(operator, firstNum, Number(screen.value));
+    firstNum = '';
 }
 
 const screen = document.querySelector('.display');
@@ -67,17 +59,13 @@ function getNumber(e) {
     if(e.target.classList.contains('operator')) {
         if(firstNum) {
             secondNum = Number(screen.value);
-            console.log(secondNum);
             screen.value = '';
-            screen.value = String(operate(operator, firstNum, secondNum));
-            console.log(screen.value);
+            screen.value = !isNaN(operate(operator, firstNum, secondNum)) ? +operate(operator, firstNum, secondNum).toFixed(4) : operate(operator, firstNum, secondNum);
             firstNum = Number(screen.value);
-            operator = operatorSign(e.target.textContent);
+            operator = e.target.textContent;
         } else {
             firstNum = Number(screen.value);
-            console.log(firstNum);
-            operator = operatorSign(e.target.textContent);
-            console.log(operator);
+            operator = e.target.textContent;
             screen.value = '';
         }
         container.dataset.previousKeyType = 'operator';
@@ -86,18 +74,13 @@ function getNumber(e) {
     //  Event Listener for the Equal button (i.e. =)
     if(e.target.classList.contains('calculate')){
         if(firstNum) {
-            console.log(screen.value);
-            screen.value = String(operate(operator, firstNum, Number(screen.value)));
-            console.log(screen.value);
+            calc();
         }
     }
 
     //  Event Listener for the All Clear button (i.e. AC)
     if(e.target.classList.contains('clear')) {
-        firstNum = '';
-        secondNum = '';
-        operator = '';
-        screen.value = '';
+        firstNum = secondNum = operator = screen.value = '';
     }
 
     //  Event Listener for the backspace button (i.e. C)
@@ -105,3 +88,46 @@ function getNumber(e) {
         screen.value = screen.value.slice(0, screen.value.length - 1);
     }
 }
+
+document.addEventListener('keydown', e => {
+    const keyName = e.key;
+    if(!isNaN(keyName)) {
+        const previousKeyType = container.dataset.previousKeyType;
+        if(previousKeyType === 'operator') {
+            screen.value = '';
+        }
+        screen.value += keyName;
+        container.dataset.previousKeyType = 'number';
+    }
+
+    if(keyName === 'Backspace') {
+        screen.value = screen.value.slice(0, screen.value.length - 1);
+    }
+
+    if(keyName === '.') {
+        if(!screen.value.includes('.')) {
+            screen.value += keyName;
+        }
+    }
+
+    if(keyName === '+' || keyName === '-' || keyName === '*' || keyName === '/') {
+        if(firstNum) {
+            secondNum = Number(screen.value);
+            screen.value = '';
+            screen.value = !isNaN(operate(operator, firstNum, secondNum)) ? +operate(operator, firstNum, secondNum).toFixed(4) : operate(operator, firstNum, secondNum);
+            firstNum = Number(screen.value);
+            operator = keyName;
+        } else {
+            firstNum = Number(screen.value);
+            operator = keyName;
+            screen.value = '';
+        }
+        container.dataset.previousKeyType = 'operator';
+    }
+
+    if(keyName === '=' || keyName === 'Enter') {
+        if(firstNum) {
+            calc();
+        }
+    }
+});
