@@ -32,10 +32,12 @@ function calc() {
     firstNum = '';
 }
 
+//  Get the display
 const screen = document.querySelector('.display');
 let firstNum, secondNum, operator;
 
 const container = document.querySelector('.container');
+//  Add event listener to the calculator buttons
 container.addEventListener('click', getNumber);
 
 function getNumber(e) {
