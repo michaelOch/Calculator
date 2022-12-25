@@ -14,6 +14,10 @@ function divide(a, b) {
     return b == '0' ? 'Math Error' : a / b;
 }
 
+function modulus(a, b) {
+    return b == '0' ? 'Math Error' : ((a % b) + b) % b;
+}
+
 function operate(operator, a, b) {
     if(operator == '+') {
         return add(a,b);
@@ -21,8 +25,10 @@ function operate(operator, a, b) {
         return subtract(a,b);
     } else if(operator == 'x' || operator == '*') {
         return multiply(a,b);
-    } else{
+    } else if (operator == '/' || operator == '') {
         return divide(a,b);
+    } else if (operator == '%') {
+        return modulus(a,b);
     }
 }
 
@@ -112,7 +118,7 @@ document.addEventListener('keydown', e => {
         }
     }
 
-    if(keyName === '+' || keyName === '-' || keyName === '*' || keyName === '/') {
+    if(keyName === '+' || keyName === '-' || keyName === '*' || keyName === '/' || keyName === '%') {
         if(firstNum) {
             secondNum = Number(screen.value);
             screen.value = '';
